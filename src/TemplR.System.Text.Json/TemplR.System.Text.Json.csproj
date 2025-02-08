@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    
+    <PackageId>TemplR.System.Text.Json</PackageId>
+    <Description>Integration for TemplR with System.Text.Json.</Description>
+    <Version>1.0.0</Version>
+    <Authors>Mina Radman;Andrew Egan</Authors>
+    <Company>Wtek Ltd</Company>
+    <Copyright>Copyright 2024 Wtek Ltd</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/WtekLtd/templr.git</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TemplR\TemplR.csproj" />
+  </ItemGroup>
+</Project>
