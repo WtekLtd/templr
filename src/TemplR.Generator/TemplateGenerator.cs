@@ -35,6 +35,7 @@ namespace TemplR.Generator
                 using var textWriter = new StringWriter();
                 using var codeWriter = new IndentedTextWriter(textWriter);
 
+                codeWriter.WriteLine("using TemplR;");
                 codeWriter.WriteLine();
 
                 codeWriter.WriteLine($"namespace {model.Namespace}");

@@ -25,7 +25,7 @@
     
     <PackageId>TemplR.Generator</PackageId>
     <Description>Proxy Generator for TemplR</Description>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Mina Radman;Andrew Egan</Authors>
     <Company>Wtek Ltd</Company>
     <Copyright>Copyright 2024 Wtek Ltd</Copyright>
