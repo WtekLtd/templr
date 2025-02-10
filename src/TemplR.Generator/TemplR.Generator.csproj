@@ -25,12 +25,13 @@
     
     <PackageId>TemplR.Generator</PackageId>
     <Description>Proxy Generator for TemplR</Description>
-    <Version>1.0.1</Version>
-    <Authors>Mina Radman;Andrew Egan</Authors>
+    <Version>1.0.2</Version>
+    <Authors>Wtek Ltd</Authors>
     <Company>Wtek Ltd</Company>
-    <Copyright>Copyright 2024 Wtek Ltd</Copyright>
+    <Copyright>Copyright 2025 Wtek Ltd</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Variable;Enrichment;Typesafe;Serialization;Payload;Placeholder;Event;Template</PackageTags>
     <RepositoryUrl>https://github.com/WtekLtd/templr.git</RepositoryUrl>
   </PropertyGroup>
 
