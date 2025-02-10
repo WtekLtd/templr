@@ -13,7 +13,7 @@
     <PackageId>TemplR</PackageId>
     <Description>Serializable, Type-safe Payload Enrichment for .NET</Description>
     <Version>1.0.2</Version>
-    <Authors>Wtek Ltd</Authors>
+    <Authors>Wtek</Authors>
     <Company>Wtek Ltd</Company>
     <Copyright>Copyright 2025 Wtek Ltd</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -26,7 +26,7 @@
     <PackageId>TemplR.Generator</PackageId>
     <Description>Proxy Generator for TemplR</Description>
     <Version>1.0.2</Version>
-    <Authors>Wtek Ltd</Authors>
+    <Authors>Wtek</Authors>
     <Company>Wtek Ltd</Company>
     <Copyright>Copyright 2025 Wtek Ltd</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
