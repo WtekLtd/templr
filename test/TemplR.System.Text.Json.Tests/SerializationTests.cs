@@ -22,14 +22,14 @@ public class SerializationTests
     {
         var template = new TestClassTemplate
         {
-            StringProp = From.Variable("myString"),
-            IntProp = From.Variable("myInt"),
-            BoolProp = From.Variable("myBool"),
-            NullableDecimalProp = From.Variable("myNullableDecimal")
+            StringProp = StronglyTypedVariables.MyString,
+            IntProp = StronglyTypedVariables.MyInt,
+            BoolProp = StronglyTypedVariables.MyBool,
+            NullableDecimalProp = StronglyTypedVariables.MyNullableDecimal
         };
 
         var json = JsonSerializer.Serialize(template, SerializerOptions);
-        
+
         var expectedJson = """
         {
             "stringProp": "${myString}",
@@ -94,10 +94,10 @@ public class SerializationTests
     {
         var template = new TestClassTemplate
         {
-            StringProp = From.Variable("myString"),
-            IntProp = From.Variable("myInt"),
-            BoolProp = From.Variable("myBool"),
-            NullableDecimalProp = From.Variable("myNullableDecimal")
+            StringProp = StronglyTypedVariables.MyString,
+            IntProp = StronglyTypedVariables.MyInt,
+            BoolProp = StronglyTypedVariables.MyBool,
+            NullableDecimalProp = StronglyTypedVariables.MyNullableDecimal
         };
         template.SetVariables(new()
         {
@@ -122,7 +122,7 @@ public class SerializationTests
     {
         var template = new TestClassTemplate
         {
-            StringProp = From.Variable("myString")
+            StringProp = StronglyTypedVariables.MyString
         };
 
         var json = JsonSerializer.Serialize(template, SerializerOptions);
@@ -146,10 +146,10 @@ public class SerializationTests
             WrapperStringProp = "stringValue",
             Child = new TestClassTemplate
             {
-                StringProp = From.Variable("myString"),
-                IntProp = From.Variable("myInt"),
-                BoolProp = From.Variable("myBool"),
-                NullableDecimalProp = From.Variable("myNullableDecimal")
+                StringProp = StronglyTypedVariables.MyString,
+                IntProp = StronglyTypedVariables.MyInt,
+                BoolProp = StronglyTypedVariables.MyBool,
+                NullableDecimalProp = StronglyTypedVariables.MyNullableDecimal
             }
         };
 
@@ -174,13 +174,13 @@ public class SerializationTests
     {
         var nested = new TestClassContainerTemplate
         {
-            ContainerStringProp = From.Variable("myContainerStringProp"),
+            ContainerStringProp = StronglyTypedVariables.MyContainerString,
             TestClassProp = new TestClassTemplate
             {
-                StringProp = From.Variable("myStringProp"),
-                IntProp = From.Variable("myIntProp"),
-                BoolProp = From.Variable("myBoolProp"),
-                NullableDecimalProp = From.Variable("myNullableDecimalProp")
+                StringProp = StronglyTypedVariables.MyString,
+                IntProp = StronglyTypedVariables.MyInt,
+                BoolProp = StronglyTypedVariables.MyBool,
+                NullableDecimalProp = StronglyTypedVariables.MyNullableDecimal
             }
         };
 
@@ -188,15 +188,112 @@ public class SerializationTests
 
         var expectedJson = """
         {
-            "containerStringProp": "${myContainerStringProp}",
+            "containerStringProp": "${myContainerString}",
             "testClassProp": {
-                "stringProp": "${myStringProp}",
-                "intProp": "${myIntProp}",
-                "boolProp": "${myBoolProp}",
-                "nullableDecimalProp": "${myNullableDecimalProp}"
+                "stringProp": "${myString}",
+                "intProp": "${myInt}",
+                "boolProp": "${myBool}",
+                "nullableDecimalProp": "${myNullableDecimal}"
             }
         }
         """;
         JsonAssert.Equal(expectedJson, json);
+    }
+
+    [Fact]
+    public void SerializeExpressionType_WithDefaultVariables_TokensSerializedAsPlaceholders()
+    {
+        var template = From.Expression<TestClass, DefaultVariables>((vars) => new()
+        {
+            StringProp = vars.MyStringProp,
+            BoolProp = vars.MyBoolProp,
+            IntProp = 100
+        });
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "stringProp": "${myStringProp}",
+            "intProp": 100,
+            "boolProp": "${myBoolProp}"
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+    }
+
+    [Fact]
+    public void SerializeExpressionType_WithIndividuallyNamedVariables_TokensSerializedAsPlaceholders()
+    {
+        var template = From.Expression<TestClass, IndividuallyNamedVariables>((vars) => new()
+        {
+            StringProp = vars.MyStringProp,
+            BoolProp = vars.MyBoolProp,
+            IntProp = 100
+        });
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "stringProp": "${MyStringProp}",
+            "intProp": 100,
+            "boolProp": "${myBoolProp}"
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+    }
+
+    [Fact]
+    public void SerializeNestedExpressionType_NonCamelCaseVariables_TokensSerializedAsPlaceholders()
+    {
+        var template = From.Expression<TestClassContainer, NonCamelCaseVariables>((vars) => new()
+        {
+            ContainerStringProp = vars.MyStringProp,
+            TestClassProp = new()
+            {
+                StringProp = vars.MyStringProp,
+                BoolProp = vars.MyBoolProp,
+                IntProp = 100
+            }
+        });
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "containerStringProp": "${MyStringProp}",
+            "testClassProp": {
+                "stringProp": "${MyStringProp}",
+                "intProp": 100,
+                "boolProp": "${MyBoolProp}"
+            }
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+    }
+
+    private static class StronglyTypedVariables
+    {
+        public static Variable<string> MyString => From.Variable<string>("myString");
+
+        public static Variable<bool> MyBool => From.Variable<bool>("myBool");
+
+        public static Variable<int> MyInt => From.Variable<int>("myInt");
+
+        public static Variable<decimal?> MyNullableDecimal => From.Variable<decimal?>("myNullableDecimal");
+
+        public static Variable<string> MyContainerString => From.Variable<string>("myContainerString");
+    }
+
+    [TemplateVariableSet(UseCamelCase = false)]
+    private record NonCamelCaseVariables(string MyStringProp, bool MyBoolProp);
+
+    private record DefaultVariables(string MyStringProp, bool MyBoolProp);
+
+    private record IndividuallyNamedVariables(bool MyBoolProp)
+    {
+        [TemplateVariable("MyStringProp")]
+        public required string MyStringProp { get; init; }
     }
 }

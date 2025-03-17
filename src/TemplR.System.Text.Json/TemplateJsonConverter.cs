@@ -118,7 +118,8 @@ public partial class TemplateJsonConverter<T> : JsonConverter<Template<T>>
         writer.WriteStartObject();
         foreach (var propertyValue in val.PropertyValues)
         {
-            writer.WritePropertyName(propertyValue.Key);
+            var propertyName = options.PropertyNamingPolicy?.ConvertName(propertyValue.Key) ?? propertyValue.Key;
+            writer.WritePropertyName(propertyName);
             if (propertyValue.Value == null)
             {
                 writer.WriteNullValue();

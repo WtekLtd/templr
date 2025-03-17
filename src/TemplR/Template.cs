@@ -48,8 +48,6 @@ public abstract class Template<T> : Template
     }
 
     public static implicit operator Template<T>(Variable variable) {
-        return variable.Name == null
-            ? new DefaultVariable<T>()
-            : new NamedVariable<T>(variable.Name);
+        return From.Variable<T>(variable.Name);
     }
 }

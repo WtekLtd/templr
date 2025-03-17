@@ -12,7 +12,7 @@
     
     <PackageId>TemplR.System.Text.Json</PackageId>
     <Description>Integration for TemplR with System.Text.Json.</Description>
-    <Version>1.0.2</Version>
+    <Version>1.1.0</Version>
     <Authors>Wtek</Authors>
     <Company>Wtek Ltd</Company>
     <Copyright>Copyright 2025 Wtek Ltd</Copyright>
