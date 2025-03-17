@@ -1,5 +1,4 @@
 using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -86,21 +85,22 @@ namespace TemplR.Generator
             });
         }
 
-        private static List<PropertyModel> GetPropertyModels(INamedTypeSymbol targetTypeSymbol) {
-            return targetTypeSymbol
-                .GetMembers()
-                .OfType<IPropertySymbol>()
-                .Where(prop => prop.SetMethod != null)
-                .Select(prop => new PropertyModel(
-                    prop.Name,
-                    prop.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-                    prop.IsRequired
-                ))
-                .ToList();
+        private static EquatableList<PropertyModel> GetPropertyModels(INamedTypeSymbol targetTypeSymbol) {
+            return [.. 
+                targetTypeSymbol
+                    .GetMembers()
+                    .OfType<IPropertySymbol>()
+                    .Where(prop => prop.SetMethod != null)
+                    .Select(prop => new PropertyModel(
+                        prop.Name,
+                        prop.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                        prop.IsRequired
+                    ))
+            ];
         }
 
         private record PropertyModel(string Name, string Type, bool IsRequired);
 
-        private record TemplateModel(string Namespace, string ClassName, string TargetClassName, List<PropertyModel> Properties);
+        private record TemplateModel(string Namespace, string ClassName, string TargetClassName, EquatableList<PropertyModel> Properties);
     }
 }
