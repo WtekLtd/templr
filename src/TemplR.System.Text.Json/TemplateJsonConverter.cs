@@ -1,14 +1,11 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
+using TemplR.Configuration;
 
 namespace TemplR.System.Text.Json;
 
-public partial class TemplateJsonConverter<T> : JsonConverter<Template<T>>
+public partial class TemplateJsonConverter<T>(TemplRJsonOptions templrOptions) : JsonConverter<Template<T>>
 {
-    [GeneratedRegex(@"\${([a-zA-Z0-9_-]+)}")]
-    private static partial Regex VariableRegex();
-
     public override Template<T>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -16,11 +13,10 @@ public partial class TemplateJsonConverter<T> : JsonConverter<Template<T>>
             var stringValue = reader.GetString();
             if (stringValue != null)
             {
-                var variableMatch = VariableRegex().Match(stringValue);
-                if (variableMatch.Success) 
+                var variableNamingStrategy = templrOptions.VariableNamingStrategy ?? VariableNamingStrategy.Default;
+                if (variableNamingStrategy.TryConvertStringToVariable<T>(stringValue, out var variable))
                 {
-                    var variableName = variableMatch.Groups[1].Value;
-                    return new NamedVariable<T>(variableName);
+                    return variable;
                 }
             }
         }
@@ -83,7 +79,7 @@ public partial class TemplateJsonConverter<T> : JsonConverter<Template<T>>
         }
     }
 
-    private static void WriteVariable(Utf8JsonWriter writer, Variable<T> variable, JsonSerializerOptions options)
+    private void WriteVariable(Utf8JsonWriter writer, Variable<T> variable, JsonSerializerOptions options)
     {
         var variableName = variable.Name;
         if (variable.UsePropertyNamingConvention && options.PropertyNamingPolicy != null)
@@ -97,7 +93,8 @@ public partial class TemplateJsonConverter<T> : JsonConverter<Template<T>>
         }
         else 
         {
-            writer.WriteStringValue($"${{{variableName}}}");
+            var variableNamingStrategy = templrOptions.VariableNamingStrategy ?? VariableNamingStrategy.Default;
+            writer.WriteStringValue(variableNamingStrategy.FormatVariableName(variableName));
         }
     }
 

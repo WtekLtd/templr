@@ -1,9 +1,10 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using TemplR.Configuration;
 
 namespace TemplR.System.Text.Json;
 
-public class TemplateJsonConverterFactory : JsonConverterFactory
+public class TemplateJsonConverterFactory(TemplRJsonOptions templrOptions = default) : JsonConverterFactory
 {
     public override bool CanConvert(Type typeToConvert)
     {
@@ -30,6 +31,6 @@ public class TemplateJsonConverterFactory : JsonConverterFactory
     {
         var genericType = typeToConvert?.GetGenericArguments().FirstOrDefault() ?? typeof(object);
         var converterType = typeof(TemplateJsonConverter<>).MakeGenericType(genericType);
-        return (JsonConverter)Activator.CreateInstance(converterType)!;
+        return (JsonConverter)Activator.CreateInstance(converterType, templrOptions)!;
     }
 }

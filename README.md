@@ -163,3 +163,13 @@ To **serialize a template with replacement values**, first deserialize it into t
 ```
 
 This replaces any placeholders in the template with the actual values during serialization.
+
+### Configuring Variable Naming
+
+By default TemplR serializes variables using the format `${myVariable}`. This can be customised by passing a configuration object to the `UseTemplR` method. For example the code below configures TemplR to use the format `$myVariable`...
+
+```csharp
+    serializerOptions.UseTemplR(new() { VariableNamingStrategy = VariableNamingStrategy.DollarOnly });
+```
+
+To implement a custom variable naming strategy, implement the abstract class `VariableNamingStrategy` and pass an instance as shown above.
