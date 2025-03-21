@@ -273,6 +273,74 @@ public class SerializationTests
         JsonAssert.Equal(expectedJson, json);
     }
 
+    [Fact]
+    public void SerializeGeneratedTypeWithCollection_WithTokenForEntireCollection_TokenSerializedAsPlaceholders()
+    {
+        var template = new TestClassWithCollectionTemplate
+        {
+            StringsProp = StronglyTypedVariables.MyStrings
+        };
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "stringsProp": "${myStrings}"
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+    }
+
+    [Fact]
+    public void SerializeGeneratedTypeWithCollection_WithChildTokens_ChildTokensSerializedAsList()
+    {
+        var template = new TestClassWithCollectionTemplate
+        {
+            StringsProp = From.Collection([
+                StronglyTypedVariables.MyString,
+                "constantString"
+            ])
+        };
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "stringsProp": [
+                "${myString}",
+                "constantString"
+            ]
+        }
+        """;
+        JsonAssert.Equal(expectedJson , json);
+    }
+
+    [Fact]
+    public void SerializeGeneratedTypeWithCollection_WithChildDefaultVariable_ChildTokensSerializedAsListUsingIndex()
+    {
+        var template = new TestClassWithCollectionTemplate
+        {
+            StringsProp = From.Collection([
+                From.Variable<string>(),
+                "constantString",
+                From.Variable<string>(),
+            ])
+        };
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "stringsProp": [
+                "${stringsProp_0}",
+                "constantString",
+                "${stringsProp_2}"
+            ]
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+    }
+
     private static class StronglyTypedVariables
     {
         public static Variable<string> MyString => From.Variable<string>("myString");
@@ -284,6 +352,8 @@ public class SerializationTests
         public static Variable<decimal?> MyNullableDecimal => From.Variable<decimal?>("myNullableDecimal");
 
         public static Variable<string> MyContainerString => From.Variable<string>("myContainerString");
+
+        public static Variable<IEnumerable<string>> MyStrings => From.Variable<IEnumerable<string>>("myStrings");
     }
 
     [TemplateVariableSet(UseCamelCase = false)]

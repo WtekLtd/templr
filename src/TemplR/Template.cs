@@ -8,7 +8,7 @@ public abstract class Template
 
     protected Template? Parent { get; private set; }
 
-    public void SetContext(Template parent, string propertyName) 
+    public virtual void SetContext(Template parent, string propertyName) 
     {
         if (Parent != null)
         {

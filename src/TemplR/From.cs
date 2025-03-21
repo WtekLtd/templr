@@ -22,6 +22,11 @@ public static class From
             : new DefaultVariable<T>();
     }
 
+    public static TemplateCollection<T> Collection<T>(IEnumerable<Template<T>> templates)
+    {
+        return new TemplateCollection<T>(templates);
+    }
+
     public static Template<TTemplate> Expression<TTemplate, TVariables>(
         Expression<Func<TVariables, TTemplate>> expression
     )
