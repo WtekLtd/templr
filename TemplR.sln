@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3A5F3FD7-F77F-468B-ACC9-E0E692AD89EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplR", "src\TemplR\TemplR.csproj", "{89ACC2B3-6B05-42DB-A626-6139A4312B84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplR.Generator", "src\TemplR.Generator\TemplR.Generator.csproj", "{81B418BC-AA23-4CAB-A311-C899FA3C8383}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplR.System.Text.Json", "src\TemplR.System.Text.Json\TemplR.System.Text.Json.csproj", "{CEB7C2AA-809A-4B25-A0BF-FBB3568C979A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{440D903A-432A-4E9E-B40A-F88CCC4BB974}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplR.System.Text.Json.Tests", "test\TemplR.System.Text.Json.Tests\TemplR.System.Text.Json.Tests.csproj", "{3809538B-44CA-4D08-80D2-FE50E6848F23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89ACC2B3-6B05-42DB-A626-6139A4312B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89ACC2B3-6B05-42DB-A626-6139A4312B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89ACC2B3-6B05-42DB-A626-6139A4312B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89ACC2B3-6B05-42DB-A626-6139A4312B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B418BC-AA23-4CAB-A311-C899FA3C8383}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B418BC-AA23-4CAB-A311-C899FA3C8383}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B418BC-AA23-4CAB-A311-C899FA3C8383}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B418BC-AA23-4CAB-A311-C899FA3C8383}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB7C2AA-809A-4B25-A0BF-FBB3568C979A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB7C2AA-809A-4B25-A0BF-FBB3568C979A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB7C2AA-809A-4B25-A0BF-FBB3568C979A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB7C2AA-809A-4B25-A0BF-FBB3568C979A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3809538B-44CA-4D08-80D2-FE50E6848F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3809538B-44CA-4D08-80D2-FE50E6848F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3809538B-44CA-4D08-80D2-FE50E6848F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3809538B-44CA-4D08-80D2-FE50E6848F23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{89ACC2B3-6B05-42DB-A626-6139A4312B84} = {3A5F3FD7-F77F-468B-ACC9-E0E692AD89EB}
+		{81B418BC-AA23-4CAB-A311-C899FA3C8383} = {3A5F3FD7-F77F-468B-ACC9-E0E692AD89EB}
+		{CEB7C2AA-809A-4B25-A0BF-FBB3568C979A} = {3A5F3FD7-F77F-468B-ACC9-E0E692AD89EB}
+		{3809538B-44CA-4D08-80D2-FE50E6848F23} = {440D903A-432A-4E9E-B40A-F88CCC4BB974}
+	EndGlobalSection
+EndGlobal
