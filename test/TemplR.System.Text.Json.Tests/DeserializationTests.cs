@@ -222,4 +222,45 @@ public class DeserializationTests
             (x) => TemplateAssert.IsDynamicVariable<string>(x, "myString2")
         );
     }
+
+    [Fact]
+    public void DeserializeToGeneratedType_WithDictionary_CreatesDynamicTypeWithDictionary()
+    {
+        var json = """
+        {
+            "dictionaryProp": {
+                "key1": "${myString1}",
+                "key2": "myConstant",
+                "key3": "${myString2}"
+            }
+        }
+        """;
+        
+        var template = JsonSerializer.Deserialize<TestClassWithDictionaryTemplate>(json, SerializerOptions);
+
+        Assert.NotNull(template);
+        var templateObject = Assert.IsAssignableFrom<TypedTemplateObject<IDictionary<string, object>>>(template.DictionaryProp);
+    
+        Assert.Collection(
+            templateObject.PropertyValues,
+            (x) => TemplateAssert.IsDynamicVariable<object>(x.Value, "myString1"),
+            (x) => TemplateAssert.IsDynamicConstant(x.Value, "myConstant"),
+            (x) => TemplateAssert.IsDynamicVariable<object>(x.Value, "myString2")
+        );
+    }
+
+    [Fact]
+    public void DeserializeToGeneratedType_WithDictionaryVariable_CreatesDynamicTypeWithVariable()
+    {
+        var json = """
+        {
+            "dictionaryProp": "${myDictionary}"
+        }
+        """;
+        
+        var template = JsonSerializer.Deserialize<TestClassWithDictionaryTemplate>(json, SerializerOptions);
+
+        Assert.NotNull(template);
+        TemplateAssert.IsDynamicVariable<IDictionary<string, object>>(template.DictionaryProp, "myDictionary");
+    }
 }

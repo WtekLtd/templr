@@ -27,6 +27,11 @@ public static class From
         return new TypedTemplateCollection<T>(templates);
     }
 
+    public static TypedTemplateObject<T> Object<T>(Dictionary<string, Template> memberValues) where T : class
+    {
+        return new TypedTemplateObject<T>(memberValues);
+    }
+
     public static Template<TTemplate> Expression<TTemplate, TVariables>(
         Expression<Func<TVariables, TTemplate>> expression
     )
