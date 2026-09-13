@@ -341,6 +341,114 @@ public class SerializationTests
         JsonAssert.Equal(expectedJson, json);
     }
 
+    [Fact]
+    public void SerializeGeneratedTypeWithDictionary_WithChildTokens_ChildTokensSerializedAsDictionary()
+    {
+        var template = new TestClassWithDictionaryTemplate
+        {
+            DictionaryProp = From.Object<IDictionary<string, object>>(
+                new()
+                {
+                    { "key1", StronglyTypedVariables.MyString },
+                    { "key2", From.Constant("constantString") },
+                    { "key3", StronglyTypedVariables.MyInt }
+                }
+            )
+        };
+
+        // Without variables
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+        var expectedJson = """
+        {
+            "dictionaryProp": {
+                "key1": "${myString}",
+                "key2": "constantString",
+                "key3": "${myInt}"
+            }
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+
+        // With variables
+        template.SetVariables(new()
+        {
+            { "myString", "abc" },
+            { "myInt", 42 }
+        });
+        var tokenisedJson = JsonSerializer.Serialize(template, SerializerOptions);
+        var expectedTokenisedJson = """
+        {
+            "dictionaryProp": {
+                "key1": "abc",
+                "key2": "constantString",
+                "key3": 42
+            }
+        }
+        """;
+        JsonAssert.Equal(expectedTokenisedJson, tokenisedJson);
+    }
+
+    [Fact]
+    public void SerializeGeneratedTypeWithDictionary_WithVariable_PropertySerializedAsVariable()
+    {
+        var template = new TestClassWithDictionaryTemplate
+        {
+            DictionaryProp = From.Variable("myDictionary")
+        };
+
+        // Without variables
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+        var expectedJson = """
+        {
+            "dictionaryProp": "${myDictionary}"
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+
+        // With variables
+        template.SetVariables(new()
+        {
+            { "myDictionary", new Dictionary<string, object> { { "key1", "abc" }, { "key2", 42 } } }
+        });
+        var tokenisedJson = JsonSerializer.Serialize(template, SerializerOptions);
+        var expectedTokenisedJson = """
+        {
+            "dictionaryProp": {
+                "key1": "abc",
+                "key2": 42
+            }
+        }
+        """;
+        JsonAssert.Equal(expectedTokenisedJson, tokenisedJson);
+    }
+
+    [Fact]
+    public void SerializeGeneratedTypeWithDictionary_WithConstant_PropertySerializedAsVariable()
+    {
+        var dictionary = new Dictionary<string, object>
+        {
+            { "key1", "value1" },
+            { "key2", 42 }
+        };
+
+        var template = new TestClassWithDictionaryTemplate
+        {
+            DictionaryProp = dictionary
+        };
+
+        var json = JsonSerializer.Serialize(template, SerializerOptions);
+
+        var expectedJson = """
+        {
+            "dictionaryProp": {
+                "key1": "value1",
+                "key2": 42
+            }
+        }
+        """;
+        JsonAssert.Equal(expectedJson, json);
+    }
+
     private static class StronglyTypedVariables
     {
         public static Variable<string> MyString => From.Variable<string>("myString");

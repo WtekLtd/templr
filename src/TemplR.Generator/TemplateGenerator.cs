@@ -101,7 +101,10 @@ namespace TemplR.Generator
         private static PropertyModel GetPropertyModel(IPropertySymbol prop)
         {
             var namedType = prop.Type as INamedTypeSymbol;
-            var isCollection = namedType != null && namedType.IsGenericType && namedType.AllInterfaces.Any(i => i.IsGenericType && i.ConstructUnboundGenericType().ToDisplayString() == "System.Collections.Generic.IEnumerable<>");
+            var isCollection = namedType != null
+                && namedType.IsGenericType
+                && namedType.TypeArguments.Length == 1
+                && namedType.AllInterfaces.Any(i => i.IsGenericType && i.ConstructUnboundGenericType().ToDisplayString() == "System.Collections.Generic.IEnumerable<>");
 
             return new PropertyModel(
                 prop.Name,
